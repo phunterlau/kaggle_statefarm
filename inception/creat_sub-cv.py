@@ -10,16 +10,9 @@ logger.setLevel(logging.DEBUG)
 #which batch and which epoch
 num_round = int(sys.argv[1])
 num_batch = int(sys.argv[2])
-#prefix = "model/ckpt-%d-0"%num_batch
-#prefix = "model/ckpt-noaug%d-0"%num_batch
-#prefix = "model/ckpt-smalllr%d-0"%num_batch
-#prefix = "model/ckpt-shuffle%d-0"%num_batch #normal 10x lr, rot 10, shuffle
-prefix = "model/ckpt-illu%d-0"%num_batch #normal 10x lr, rot 10, no shuffle random 0.2 illu
+prefix = "model/ckpt-%d-0"%num_batch
 model = mx.model.FeedForward.load(prefix, num_round, ctx=mx.gpu(0), numpy_batch_size=1)
-#mean_img = mx.nd.load("mean%d.bin"%num_batch)["mean_img"]
-#mean_img = mx.nd.load("mean-noaug%d.bin"%num_batch)["mean_img"]
-#mean_img = mx.nd.load("mean-rand-shuffle%d.bin"%num_batch)["mean_img"]
-mean_img = mx.nd.load("mean-rand-illu%d.bin"%num_batch)["mean_img"]
+mean_img = mx.nd.load("mean%d.bin"%num_batch)["mean_img"]
 
 def PreprocessImage(path, show_img=False):
     # load image
@@ -59,7 +52,7 @@ dict_explain = {
 
 import os
 test_list = sorted(os.listdir('./test/'))
-fw = open('submission_inception-rand-illu_batch_%d_epoch_%d.csv'%(num_batch, num_round),'w')
+fw = open('submission_test_batch_%d_epoch_%d.csv'%(num_batch, num_round),'w')
 fw.write('img,c0,c1,c2,c3,c4,c5,c6,c7,c8,c9\n')
 fw_exam = open('exam_%d_%d.txt'%(num_batch, num_round),'w')
 cnt = 0
